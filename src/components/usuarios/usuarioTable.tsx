@@ -123,7 +123,8 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
                     <div className="flex justify-end gap-2">
                       <Button
                         variant="secondary"
-                        className="h-9 rounded-lg"
+                        disabled={!onEdit}
+                        className="h-9 rounded-lg disabled:text-slate-400"
                         onClick={() => onEdit?.(usuario)}
                       >
                         <Pencil size={16} />

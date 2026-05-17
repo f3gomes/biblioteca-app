@@ -95,8 +95,9 @@ export function LivroTable({ livros, onDelete, onEdit }: Props) {
                   <td className="px-6 py-4">
                     <div className="flex justify-end gap-2">
                       <Button
+                        disabled={!onEdit}
                         variant="secondary"
-                        className="h-9 rounded-lg"
+                        className="h-9 rounded-lg disabled:text-slate-400"
                         onClick={() => onEdit?.(livro)}
                       >
                         <Pencil size={16} />
