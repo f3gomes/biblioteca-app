@@ -12,7 +12,6 @@ export function Navbar() {
     >
       <div
         className="
-          max-w-7xl
           mx-auto
           px-6
           h-16

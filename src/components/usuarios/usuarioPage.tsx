@@ -34,13 +34,13 @@ export function UsuarioPage() {
   async function handleCreate(data: CreateUsuarioDTO) {
     try {
       await criarUsuario(data);
-      toast.success("Usuário criado")
+      toast.success("Usuário criado");
 
       await loadUsuarios();
 
       setOpen(false);
     } catch (error) {
-      toast.error("Erro ao criar usuário")
+      toast.error("Erro ao criar usuário");
       console.error("Erro ao criar usuário", error);
     }
   }
@@ -61,14 +61,14 @@ export function UsuarioPage() {
 
   return (
     <PageContainer>
-      <div className="space-y-6 -ml-6">
+      <div className="space-y-6">
         <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
               <Users className="text-blue-700" size={28} />
             </div>
 
-            <div>
+            <div className="flex gap-2 flex-col items-start">
               <h1 className="text-3xl font-bold tracking-tight text-slate-800!">
                 Usuários
               </h1>

@@ -70,7 +70,7 @@ export function AutoresPage() {
               <BookUser className="text-blue-700" size={28} />
             </div>
 
-            <div>
+            <div className="flex gap-2 flex-col items-start">
               <h1 className="text-3xl font-bold tracking-tight text-slate-800">
                 Autores
               </h1>

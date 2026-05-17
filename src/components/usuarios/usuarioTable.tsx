@@ -1,7 +1,6 @@
 import { BadgeCheck, Mail, Pencil, Phone, Trash2, User } from "lucide-react";
 
 import type { Usuario } from "../../types/usuario";
-
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 
@@ -12,6 +11,12 @@ interface Props {
 }
 
 export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
+  function formatDate(date: string | null) {
+    if (!date) return "-";
+
+    return new Date(date).toLocaleDateString("pt-BR");
+  }
+
   return (
     <Card>
       <div className="overflow-x-auto">
@@ -62,17 +67,17 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-slate-100">
                         <User size={18} className="text-slate-600" />
                       </div>
 
-                      <div>
-                        <p className="font-semibold text-slate-800">
-                          {usuario.nome}
+                      <div className="flex gap-2 items-center">
+                        <p className="text-sm text-slate-500">
+                          #{usuario.id_usuario}
                         </p>
 
-                        <p className="text-sm text-slate-500">
-                          ID #{usuario.id_usuario}
+                        <p className="font-semibold text-slate-800">
+                          {usuario.nome}
                         </p>
                       </div>
                     </div>
@@ -96,7 +101,7 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
 
                   <td className="px-6 py-4">
                     <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                      {usuario.data_cadastro}
+                      {formatDate(usuario.data_cadastro)}
                     </span>
                   </td>
 

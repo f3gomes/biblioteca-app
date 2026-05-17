@@ -29,7 +29,6 @@ export function EmprestimosPage() {
   const [selectedEmprestimo, setSelectedEmprestimo] =
     useState<Partial<Emprestimo> | null>(null);
 
-  const [status, setStatus] = useState("");
   const [dataDevolucaoReal, setDataDevolucaoReal] = useState(
     new Date().toISOString().split("T")[0],
   );
@@ -92,10 +91,7 @@ export function EmprestimosPage() {
 
   function openEditModal(emprestimo: Partial<Emprestimo>) {
     setSelectedEmprestimo(emprestimo);
-
     setDataDevolucaoReal(emprestimo.data_devolucao || getTodayDate());
-
-    setStatus(emprestimo.status ?? "");
 
     setOpenEdit(true);
   }
@@ -106,15 +102,16 @@ export function EmprestimosPage() {
 
     try {
       await devolverLivro(selectedEmprestimo.id_emprestimo, selectedEmprestimo);
-
-      toast.success("Livro devolvido com sucesso");
+      toast.success("Status atualizado com sucesso");
 
       setOpenEdit(false);
       setSelectedEmprestimo(null);
 
       await loadData();
     } catch (error) {
-      toast.error("Erro ao devolver livro");
+      toast.error(
+        `Erro ao atualizar status empréstimo ${selectedEmprestimo?.id_emprestimo}`,
+      );
       console.error(error);
     }
   }
@@ -128,7 +125,7 @@ export function EmprestimosPage() {
               <BookMarked className="text-blue-700" size={28} />
             </div>
 
-            <div>
+            <div className="flex gap-2 flex-col items-start">
               <h1 className="text-3xl font-bold tracking-tight text-slate-800">
                 Empréstimos
               </h1>
@@ -172,9 +169,9 @@ export function EmprestimosPage() {
           title="Devolver livro"
           onClose={() => setOpenEdit(false)}
         >
-          <div className="space-y-4 p-2">
+          <div className="space-y-4 p-2 flex flex-col">
             <div>
-              <label className="text-sm font-medium text-slate-600">
+              <label className="text-sm font-medium text-slate-600 flex">
                 Data de devolução real
               </label>
 
@@ -187,17 +184,27 @@ export function EmprestimosPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-600">
+              <label className="text-sm font-medium text-slate-600 flex">
                 Status
               </label>
+
               <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+                value={selectedEmprestimo?.status}
+                onChange={(e) =>
+                  setSelectedEmprestimo((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          status: e.target.value,
+                        }
+                      : null,
+                  )
+                }
                 className="mt-1 w-full rounded-lg border border-slate-300 p-2"
               >
                 <option value="DEVOLVIDO">DEVOLVIDO</option>
                 <option value="ATRASADO">ATRASADO</option>
-                <option value="EM_ANDAMENTO">EM_ANDAMENTO</option>
+                <option value="EMPRESTADO">EMPRESTADO</option>
               </select>
             </div>
 

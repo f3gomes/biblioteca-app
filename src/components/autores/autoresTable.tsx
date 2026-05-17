@@ -54,13 +54,13 @@ export function AutorTable({ autores, onDelete, onEdit }: Props) {
                         <BookUser size={18} className="text-slate-600" />
                       </div>
 
-                      <div>
-                        <p className="font-semibold text-slate-800">
-                          {autor.nome}
+                      <div className="flex gap-2 items-center">
+                        <p className="text-sm text-slate-500">
+                          #{autor.id_autor}
                         </p>
 
-                        <p className="text-sm text-slate-500">
-                          ID #{autor.id_autor}
+                        <p className="font-semibold text-slate-800">
+                          {autor.nome}
                         </p>
                       </div>
                     </div>

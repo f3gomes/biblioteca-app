@@ -12,6 +12,7 @@ import type { Emprestimo } from "../../types/emprestimo";
 
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { useEffect, useRef } from "react";
 
 interface Props {
   emprestimos: Emprestimo[];
@@ -25,6 +26,14 @@ export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
 
     return new Date(date).toLocaleDateString("pt-BR");
   }
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
+    }
+  }, []);
 
   function getStatusStyle(status: string) {
     switch (status.toUpperCase()) {
@@ -41,7 +50,7 @@ export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
 
   return (
     <Card>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" ref={scrollRef}>
         <table className="w-full min-w-300">
           <thead className="bg-slate-50">
             <tr>
@@ -97,21 +106,21 @@ export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-slate-100">
                           <User size={18} className="text-slate-600" />
                         </div>
 
-                        <div>
+                        <div className="flex gap-2 items-center">
+                          <p className="text-sm text-slate-500">
+                            #{emprestimo.id_emprestimo}
+                          </p>
+
                           <p
                             className={`font-semibold ${
                               isDevolvido ? "text-slate-400" : "text-slate-800"
                             }`}
                           >
                             {emprestimo.usuario}
-                          </p>
-
-                          <p className="text-sm text-slate-500">
-                            ID #{emprestimo.id_emprestimo}
                           </p>
                         </div>
                       </div>

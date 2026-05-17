@@ -25,7 +25,7 @@ export function Modal({ open, title, children, onClose }: Props) {
           rounded-2xl
           p-6
           w-full
-          max-w-2xl
+          max-w-xl
         "
       >
         <div className="flex justify-between mb-6">
