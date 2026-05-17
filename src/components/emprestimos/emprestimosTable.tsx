@@ -86,94 +86,121 @@ export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
                 </td>
               </tr>
             ) : (
-              emprestimos.map((emprestimo) => (
-                <tr
-                  key={emprestimo.id_emprestimo}
-                  className="transition-colors hover:bg-slate-50"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
-                        <User size={18} className="text-slate-600" />
+              emprestimos.map((emprestimo) => {
+                const isDevolvido =
+                  emprestimo.status?.toLowerCase() === "devolvido";
+
+                return (
+                  <tr
+                    key={emprestimo.id_emprestimo}
+                    className={`transition-colors ${isDevolvido ? "opacity-50" : "hover:bg-slate-50"}`}
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                          <User size={18} className="text-slate-600" />
+                        </div>
+
+                        <div>
+                          <p
+                            className={`font-semibold ${
+                              isDevolvido ? "text-slate-400" : "text-slate-800"
+                            }`}
+                          >
+                            {emprestimo.usuario}
+                          </p>
+
+                          <p className="text-sm text-slate-500">
+                            ID #{emprestimo.id_emprestimo}
+                          </p>
+                        </div>
                       </div>
+                    </td>
 
-                      <div>
-                        <p className="font-semibold text-slate-800">
-                          {emprestimo.usuario}
-                        </p>
+                    <td className="px-6 py-4">
+                      <div
+                        className={`flex items-center gap-2 text-sm ${
+                          isDevolvido ? "text-slate-400" : "text-slate-700"
+                        }`}
+                      >
+                        <BookOpen size={16} className="text-slate-400" />
 
-                        <p className="text-sm text-slate-500">
-                          ID #{emprestimo.id_emprestimo}
-                        </p>
+                        <span>{emprestimo.livro}</span>
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                      <BookOpen size={16} className="text-slate-400" />
+                    <td className="px-6 py-4">
+                      <div
+                        className={`flex items-center gap-2 text-sm ${
+                          isDevolvido ? "text-slate-400" : "text-slate-700"
+                        }`}
+                      >
+                        <Calendar size={15} className="text-slate-400" />
 
-                      <span>{emprestimo.livro}</span>
-                    </div>
-                  </td>
+                        <span>{formatDate(emprestimo.data_emprestimo)}</span>
+                      </div>
+                    </td>
 
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                      <Calendar size={15} className="text-slate-400" />
+                    <td className="px-6 py-4">
+                      <div
+                        className={`flex items-center gap-2 text-sm ${
+                          isDevolvido ? "text-slate-400" : "text-slate-700"
+                        }`}
+                      >
+                        <Clock3 size={15} className="text-slate-400" />
 
-                      <span>{formatDate(emprestimo.data_emprestimo)}</span>
-                    </div>
-                  </td>
+                        <span>
+                          {formatDate(emprestimo.data_prevista_devolucao)}
+                        </span>
+                      </div>
+                    </td>
 
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                      <Clock3 size={15} className="text-slate-400" />
+                    <td className="px-6 py-4">
+                      <div
+                        className={`flex items-center gap-2 text-sm ${
+                          isDevolvido ? "text-slate-400" : "text-slate-700"
+                        }`}
+                      >
+                        <CheckCircle2 size={15} className="text-slate-400" />
 
-                      <span>
-                        {formatDate(emprestimo.data_prevista_devolucao)}
+                        <span>{formatDate(emprestimo.data_devolucao)}</span>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                          emprestimo.status,
+                        )}`}
+                      >
+                        {emprestimo.status}
                       </span>
-                    </div>
-                  </td>
+                    </td>
 
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
-                      <CheckCircle2 size={15} className="text-slate-400" />
+                    <td className="px-6 py-4">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="secondary"
+                          className="h-9 rounded-lg"
+                          onClick={() => onEdit?.(emprestimo)}
+                          disabled={isDevolvido}
+                        >
+                          <Pencil size={16} />
+                        </Button>
 
-                      <span>{formatDate(emprestimo.data_devolucao)}</span>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
-                        emprestimo.status,
-                      )}`}
-                    >
-                      {emprestimo.status}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="secondary"
-                        className="h-9 rounded-lg"
-                        onClick={() => onEdit?.(emprestimo)}
-                      >
-                        <Pencil size={16} />
-                      </Button>
-
-                      <Button
-                        variant="danger"
-                        className="h-9 rounded-lg"
-                        onClick={() => onDelete(emprestimo.id_emprestimo)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                        <Button
+                          variant="danger"
+                          className="h-9 rounded-lg"
+                          onClick={() => onDelete(emprestimo.id_emprestimo)}
+                          disabled={isDevolvido}
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
