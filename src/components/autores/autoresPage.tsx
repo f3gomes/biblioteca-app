@@ -11,6 +11,7 @@ import { PageContainer } from "../layout/pageContainer";
 import { Button } from "../ui/button";
 import { AutorTable } from "./autoresTable";
 import { Modal } from "../ui/modal";
+import toast from "react-hot-toast";
 
 export function AutoresPage() {
   const [autores, setAutores] = useState<Autor[]>([]);
@@ -33,11 +34,13 @@ export function AutoresPage() {
   async function handleCreate(data: CriarAutorDTO) {
     try {
       await criarAutor(data);
+      toast.success("Autor criado");
 
       await loadAutores();
 
       setOpen(false);
     } catch (error) {
+      toast.error("Erro ao criar autor");
       console.error("Erro ao criar autor", error);
     }
   }
@@ -49,9 +52,11 @@ export function AutoresPage() {
 
     try {
       await deletarAutor(id);
+      toast.success(`Autor ${id} excluído com sucesso`);
 
       await loadAutores();
     } catch (error) {
+      toast.error(`Não foi possível exclui autor com id ${id}`);
       console.error("Erro ao excluir autor", error);
     }
   }

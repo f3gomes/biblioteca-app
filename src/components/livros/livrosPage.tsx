@@ -35,8 +35,9 @@ export function LivrosPage() {
 
       setOpen(false);
       carregarLivros();
-    } catch {
+    } catch (err) {
       toast.error("Erro ao criar livro");
+      console.log(err);
     }
   }
 
@@ -47,11 +48,11 @@ export function LivrosPage() {
 
     try {
       await deletarLivro(id);
-      toast.success("Livro deletado");
+      toast.success(`Livro ${id} deletado`);
 
       carregarLivros();
     } catch {
-      toast.error("Erro ao deletar livro");
+      toast.error(`Erro ao deletar livro com id ${id}`);
     }
   }
 

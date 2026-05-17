@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { EmprestimosTable } from "./emprestimosTable";
 import { Modal } from "../ui/modal";
 import { EmprestimoForm } from "./emprestimosForm";
+import toast from "react-hot-toast";
 
 export function EmprestimosPage() {
   const [emprestimos, setEmprestimos] = useState<Emprestimo[]>([]);
@@ -46,11 +47,13 @@ export function EmprestimosPage() {
   async function handleCreate(data: CriarEmprestimoDTO) {
     try {
       await criarEmprestimo(data);
+      toast.success("Empréstimo registrado para: ");
 
       await loadData();
 
       setOpen(false);
     } catch (error) {
+      toast.error("Erro ao registrar empréstimo: ");
       console.error("Erro ao criar empréstimo", error);
     }
   }
@@ -64,9 +67,11 @@ export function EmprestimosPage() {
 
     try {
       await deletarEmprestimo(id);
+      toast.success(`Empréstimo ${id} deletado com sucesso`);
 
       await loadData();
     } catch (error) {
+      toast.success("")
       console.error("Erro ao excluir empréstimo", error);
     }
   }
