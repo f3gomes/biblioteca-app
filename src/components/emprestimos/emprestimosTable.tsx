@@ -1,21 +1,48 @@
-import { BadgeCheck, Mail, Pencil, Phone, Trash2, User } from "lucide-react";
+import {
+  BookOpen,
+  Calendar,
+  CheckCircle2,
+  Clock3,
+  Pencil,
+  Trash2,
+  User,
+} from "lucide-react";
 
-import type { Usuario } from "../../types/usuario";
+import type { Emprestimo } from "../../types/emprestimo";
 
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 
 interface Props {
-  usuarios: Usuario[];
+  emprestimos: Emprestimo[];
   onDelete: (id: number) => void;
-  onEdit?: (usuario: Usuario) => void;
+  onEdit?: (emprestimo: Emprestimo) => void;
 }
 
-export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
+export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
+  function formatDate(date: string | null) {
+    if (!date) return "-";
+
+    return new Date(date).toLocaleDateString("pt-BR");
+  }
+
+  function getStatusStyle(status: string) {
+    switch (status.toUpperCase()) {
+      case "DEVOLVIDO":
+        return "bg-emerald-100 text-emerald-700";
+
+      case "ATRASADO":
+        return "bg-red-100 text-red-700";
+
+      default:
+        return "bg-amber-100 text-amber-700";
+    }
+  }
+
   return (
     <Card>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-237.5">
+        <table className="w-full min-w-300">
           <thead className="bg-slate-50">
             <tr>
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -23,15 +50,19 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
               </th>
 
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                E-mail
+                Livro
               </th>
 
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Telefone
+                Empréstimo
               </th>
 
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Cadastro
+                Devolução Prevista
+              </th>
+
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Devolução Real
               </th>
 
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -45,19 +76,19 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
           </thead>
 
           <tbody className="divide-y divide-slate-100 bg-white">
-            {usuarios.length === 0 ? (
+            {emprestimos.length === 0 ? (
               <tr>
                 <td
-                  colSpan={6}
+                  colSpan={7}
                   className="py-12 text-center text-sm text-slate-500"
                 >
-                  Nenhum usuário encontrado.
+                  Nenhum empréstimo encontrado.
                 </td>
               </tr>
             ) : (
-              usuarios.map((usuario) => (
+              emprestimos.map((emprestimo) => (
                 <tr
-                  key={usuario.id_usuario}
+                  key={emprestimo.id_emprestimo}
                   className="transition-colors hover:bg-slate-50"
                 >
                   <td className="px-6 py-4">
@@ -68,49 +99,57 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
 
                       <div>
                         <p className="font-semibold text-slate-800">
-                          {usuario.nome}
+                          {emprestimo.usuario}
                         </p>
 
                         <p className="text-sm text-slate-500">
-                          ID #{usuario.id_usuario}
+                          ID #{emprestimo.id_emprestimo}
                         </p>
                       </div>
                     </div>
                   </td>
 
-                  <td className="px-6 py-4 text-sm text-slate-700">
-                    <div className="flex items-center gap-2">
-                      <Mail size={15} className="text-slate-400" />
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <BookOpen size={16} className="text-slate-400" />
 
-                      <span>{usuario.email}</span>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4 text-sm text-slate-700">
-                    <div className="flex items-center gap-2">
-                      <Phone size={15} className="text-slate-400" />
-
-                      <span>{usuario.telefone}</span>
+                      <span>{emprestimo.livro}</span>
                     </div>
                   </td>
 
                   <td className="px-6 py-4">
-                    <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                      {usuario.data_cadastro}
-                    </span>
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <Calendar size={15} className="text-slate-400" />
+
+                      <span>{formatDate(emprestimo.data_emprestimo)}</span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <Clock3 size={15} className="text-slate-400" />
+
+                      <span>
+                        {formatDate(emprestimo.data_prevista_devolucao)}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <CheckCircle2 size={15} className="text-slate-400" />
+
+                      <span>{formatDate(emprestimo.data_devolucao)}</span>
+                    </div>
                   </td>
 
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
-                        usuario.status === "ATIVO"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                        emprestimo.status,
+                      )}`}
                     >
-                      <BadgeCheck size={13} />
-
-                      {usuario.status}
+                      {emprestimo.status}
                     </span>
                   </td>
 
@@ -119,7 +158,7 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
                       <Button
                         variant="secondary"
                         className="h-9 rounded-lg"
-                        onClick={() => onEdit?.(usuario)}
+                        onClick={() => onEdit?.(emprestimo)}
                       >
                         <Pencil size={16} />
                       </Button>
@@ -127,7 +166,7 @@ export function UsuarioTable({ usuarios, onDelete, onEdit }: Props) {
                       <Button
                         variant="danger"
                         className="h-9 rounded-lg"
-                        onClick={() => onDelete(usuario.id_usuario)}
+                        onClick={() => onDelete(emprestimo.id_emprestimo)}
                       >
                         <Trash2 size={16} />
                       </Button>

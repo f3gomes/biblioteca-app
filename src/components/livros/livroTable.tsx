@@ -1,4 +1,4 @@
-import { Pencil, Trash2, BookOpen } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 import type { Livro } from "../../types/livro";
 
@@ -62,10 +62,6 @@ export function LivroTable({ livros, onDelete, onEdit }: Props) {
 
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
-                        <BookOpen size={18} className="text-slate-600" />
-                      </div>
-
                       <div>
                         <p className="font-semibold text-slate-800">
                           {livro.titulo}
@@ -92,8 +88,7 @@ export function LivroTable({ livros, onDelete, onEdit }: Props) {
                           : "bg-red-100 text-red-700"
                       }`}
                     >
-                      {livro.quantidade_disponivel} disponível
-                      {livro.quantidade_disponivel !== 1 ? "is" : ""}
+                      {livro.quantidade_disponivel}
                     </span>
                   </td>
 

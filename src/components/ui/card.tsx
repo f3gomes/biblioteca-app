@@ -11,7 +11,10 @@ export function Card({ children }: Props) {
         bg-white
         rounded-2xl
         p-6
-        overflow-hidden border border-slate-200 shadow-sm
+        border border-slate-200 shadow-sm
+        overflow-x-auto
+        overflow-y-hidden
+        w-4xl
       "
     >
       {children}

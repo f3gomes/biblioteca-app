@@ -59,7 +59,6 @@ export function AutoresPage() {
   return (
     <PageContainer>
       <div className="space-y-6">
-        {/* Header */}
         <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100">
@@ -87,10 +86,8 @@ export function AutoresPage() {
           </Button>
         </div>
 
-        {/* Tabela */}
         <AutorTable autores={autores} onDelete={handleDelete} />
 
-        {/* Modal */}
         <Modal open={open} title="Novo Autor" onClose={() => setOpen(false)}>
           <div className="p-1">
             <AutorForm onSubmit={handleCreate} />

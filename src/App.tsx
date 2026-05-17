@@ -5,6 +5,7 @@ import { Navbar } from "./components/ui/navbar";
 import { LivrosPage } from "./components/livros/livrosPage";
 import { UsuarioPage } from "./components/usuario/usuarioPage";
 import { AutoresPage } from "./components/autores/autoresPage";
+import { EmprestimosPage } from "./components/emprestimos/emprestimosPage";
 
 export default function App() {
   return (
@@ -17,7 +18,7 @@ export default function App() {
         <Route path="/livros" element={<LivrosPage />} />
         <Route path="/usuarios" element={<UsuarioPage />} />
         <Route path="/autores" element={<AutoresPage />} />
-        <Route path="/emprestimos" element={<UsuarioPage />} />
+        <Route path="/emprestimos" element={<EmprestimosPage />} />
       </Routes>
     </BrowserRouter>
   );

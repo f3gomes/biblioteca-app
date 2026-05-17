@@ -48,7 +48,6 @@ export function AutorTable({ autores, onDelete, onEdit }: Props) {
                   key={autor.id_autor}
                   className="transition-colors hover:bg-slate-50"
                 >
-                  {/* Autor */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
@@ -67,7 +66,6 @@ export function AutorTable({ autores, onDelete, onEdit }: Props) {
                     </div>
                   </td>
 
-                  {/* Nacionalidade */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2 text-sm text-slate-700">
                       <Globe size={15} className="text-slate-400" />
@@ -76,7 +74,6 @@ export function AutorTable({ autores, onDelete, onEdit }: Props) {
                     </div>
                   </td>
 
-                  {/* Ações */}
                   <td className="px-6 py-4">
                     <div className="flex justify-end gap-2">
                       <Button

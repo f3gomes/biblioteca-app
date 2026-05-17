@@ -27,7 +27,6 @@ export function AutorForm({ onSubmit }: Props) {
       onSubmit={handleSubmit}
       className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
     >
-      {/* Header */}
       <div>
         <h2 className="text-xl font-semibold text-slate-800">
           Cadastro de Autor
@@ -38,9 +37,7 @@ export function AutorForm({ onSubmit }: Props) {
         </p>
       </div>
 
-      {/* Campos */}
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {/* Nome */}
         <div className="space-y-2 md:col-span-2">
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
             <BookUser size={16} />
@@ -59,7 +56,6 @@ export function AutorForm({ onSubmit }: Props) {
           />
         </div>
 
-        {/* Nacionalidade */}
         <div className="space-y-2 md:col-span-2">
           <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
             <Globe size={16} />
@@ -98,7 +94,6 @@ export function AutorForm({ onSubmit }: Props) {
         />
       </div>
 
-      {/* Footer */}
       <div className="flex justify-end border-t border-slate-100 pt-4">
         <Button
           type="submit"
