@@ -69,7 +69,7 @@ export function LivrosPage() {
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold tracking-tight text-slate-800">
+              <h1 className="text-3xl font-bold tracking-tight text-slate-800!">
                 Livros
               </h1>
 

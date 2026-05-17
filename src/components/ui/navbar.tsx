@@ -19,7 +19,7 @@ export function Navbar() {
           flex items-center justify-between
         "
       >
-        <h1 className="font-bold text-xl">📚 Biblioteca</h1>
+        <h1 className="font-bold text-xl text-black!">📚 Biblioteca</h1>
 
         <nav className="flex gap-6">
           <Link to="/livros">Livros</Link>

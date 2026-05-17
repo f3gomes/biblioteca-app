@@ -75,6 +75,7 @@ export function LivroForm({ onSubmit }: Props) {
           <Input
             placeholder="000-00-000-0000-0"
             value={form.isbn}
+            maxLength={13}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -91,15 +92,19 @@ export function LivroForm({ onSubmit }: Props) {
           </label>
 
           <Input
-            type="number"
+            type="text"
+            inputMode="numeric"
+            maxLength={4}
             placeholder="2026"
-            value={form.ano_publicacao}
-            onChange={(e) =>
+            value={form.ano_publicacao || ""}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "");
+
               setForm({
                 ...form,
-                ano_publicacao: Number(e.target.value),
-              })
-            }
+                ano_publicacao: value ? Number(value) : 0,
+              });
+            }}
           />
         </div>
 
@@ -148,6 +153,7 @@ export function LivroForm({ onSubmit }: Props) {
           <Input
             type="number"
             placeholder="0"
+            min={0}
             value={form.quantidade_total}
             onChange={(e) =>
               setForm({
