@@ -61,9 +61,11 @@ export function EmprestimosPage() {
 
       await loadData();
       setOpenCreate(false);
-    } catch (error) {
-      toast.error("Erro ao registrar empréstimo");
+    } catch (error: any) {
       console.error(error);
+      toast.error(
+        error?.response?.data?.message || "Erro ao registrar empréstimo",
+      );
     }
   }
 
