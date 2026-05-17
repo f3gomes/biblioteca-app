@@ -6,6 +6,7 @@ import type { Livro } from "../../types/livro";
 import {
   criarEmprestimo,
   deletarEmprestimo,
+  devolverLivro,
   listarEmprestimos,
 } from "../../services/emprestimo.service";
 import { listarLivros } from "../../services/livro.service";
@@ -21,7 +22,17 @@ export function EmprestimosPage() {
   const [emprestimos, setEmprestimos] = useState<Emprestimo[]>([]);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [livros, setLivros] = useState<Livro[]>([]);
-  const [open, setOpen] = useState(false);
+
+  const [openCreate, setOpenCreate] = useState(false);
+
+  const [openEdit, setOpenEdit] = useState(false);
+  const [selectedEmprestimo, setSelectedEmprestimo] =
+    useState<Partial<Emprestimo> | null>(null);
+
+  const [status, setStatus] = useState("");
+  const [dataDevolucaoReal, setDataDevolucaoReal] = useState(
+    new Date().toISOString().split("T")[0],
+  );
 
   async function loadData() {
     try {
@@ -47,14 +58,13 @@ export function EmprestimosPage() {
   async function handleCreate(data: CriarEmprestimoDTO) {
     try {
       await criarEmprestimo(data);
-      toast.success("Empréstimo registrado para: ");
+      toast.success("Empréstimo registrado com sucesso");
 
       await loadData();
-
-      setOpen(false);
+      setOpenCreate(false);
     } catch (error) {
-      toast.error("Erro ao registrar empréstimo: ");
-      console.error("Erro ao criar empréstimo", error);
+      toast.error("Erro ao registrar empréstimo");
+      console.error(error);
     }
   }
 
@@ -71,8 +81,41 @@ export function EmprestimosPage() {
 
       await loadData();
     } catch (error) {
-      toast.success("")
-      console.error("Erro ao excluir empréstimo", error);
+      toast.error("Erro ao excluir empréstimo");
+      console.error(error);
+    }
+  }
+
+  function getTodayDate() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  function openEditModal(emprestimo: Partial<Emprestimo>) {
+    setSelectedEmprestimo(emprestimo);
+
+    setDataDevolucaoReal(emprestimo.data_devolucao || getTodayDate());
+
+    setStatus(emprestimo.status ?? "");
+
+    setOpenEdit(true);
+  }
+
+  async function handleEdit() {
+    if (!selectedEmprestimo || selectedEmprestimo.id_emprestimo === undefined)
+      return;
+
+    try {
+      await devolverLivro(selectedEmprestimo.id_emprestimo, selectedEmprestimo);
+
+      toast.success("Livro devolvido com sucesso");
+
+      setOpenEdit(false);
+      setSelectedEmprestimo(null);
+
+      await loadData();
+    } catch (error) {
+      toast.error("Erro ao devolver livro");
+      console.error(error);
     }
   }
 
@@ -89,7 +132,6 @@ export function EmprestimosPage() {
               <h1 className="text-3xl font-bold tracking-tight text-slate-800">
                 Empréstimos
               </h1>
-
               <p className="mt-1 text-sm text-slate-500">
                 Gerencie os empréstimos de livros do sistema
               </p>
@@ -97,20 +139,24 @@ export function EmprestimosPage() {
           </div>
 
           <Button
-            onClick={() => setOpen(true)}
-            className="h-11 rounded-xl px-5 text-sm font-medium shadow-sm flex gap-2 items-center"
+            onClick={() => setOpenCreate(true)}
+            className="flex h-11 items-center gap-2 rounded-xl px-5 text-sm font-medium shadow-sm"
           >
             <Plus size={18} />
-            <span>Novo Empréstimo</span>
+            Novo Empréstimo
           </Button>
         </div>
 
-        <EmprestimosTable emprestimos={emprestimos} onDelete={handleDelete} />
+        <EmprestimosTable
+          emprestimos={emprestimos}
+          onDelete={handleDelete}
+          onEdit={openEditModal}
+        />
 
         <Modal
-          open={open}
+          open={openCreate}
           title="Novo Empréstimo"
-          onClose={() => setOpen(false)}
+          onClose={() => setOpenCreate(false)}
         >
           <div className="p-1">
             <EmprestimoForm
@@ -118,6 +164,50 @@ export function EmprestimosPage() {
               livros={livros}
               onSubmit={handleCreate}
             />
+          </div>
+        </Modal>
+
+        <Modal
+          open={openEdit}
+          title="Devolver livro"
+          onClose={() => setOpenEdit(false)}
+        >
+          <div className="space-y-4 p-2">
+            <div>
+              <label className="text-sm font-medium text-slate-600">
+                Data de devolução real
+              </label>
+
+              <input
+                type="date"
+                value={dataDevolucaoReal}
+                onChange={(e) => setDataDevolucaoReal(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-300 p-2"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-slate-600">
+                Status
+              </label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-300 p-2"
+              >
+                <option value="DEVOLVIDO">DEVOLVIDO</option>
+                <option value="ATRASADO">ATRASADO</option>
+                <option value="EM_ANDAMENTO">EM_ANDAMENTO</option>
+              </select>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="secondary" onClick={() => setOpenEdit(false)}>
+                Cancelar
+              </Button>
+
+              <Button onClick={handleEdit}>Confirmar devolução</Button>
+            </div>
           </div>
         </Modal>
       </div>

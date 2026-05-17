@@ -1,6 +1,9 @@
 import { api } from "./api";
 
-import type { Emprestimo, CriarEmprestimoDTO } from "../types/emprestimo";
+import type {
+  Emprestimo,
+  CriarEmprestimoDTO,
+} from "../types/emprestimo";
 
 export async function listarEmprestimos() {
   const response = await api.get<Emprestimo[]>("/emprestimos");
@@ -20,8 +23,8 @@ export async function criarEmprestimo(data: CriarEmprestimoDTO) {
   return response.data;
 }
 
-export async function devolverLivro(id: number) {
-  const response = await api.put(`/emprestimos/devolver/${id}`);
+export async function devolverLivro(id: number, data: Partial<Emprestimo>) {
+  const response = await api.put(`/emprestimos/devolver/${id}`, data);
 
   return response.data;
 }

@@ -16,7 +16,7 @@ import { Card } from "../ui/card";
 interface Props {
   emprestimos: Emprestimo[];
   onDelete: (id: number) => void;
-  onEdit?: (emprestimo: Emprestimo) => void;
+  onEdit?: (emprestimo: Partial<Emprestimo>) => void;
 }
 
 export function EmprestimosTable({ emprestimos, onDelete, onEdit }: Props) {
